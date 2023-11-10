@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-      <title>Preskool - Login</title>
+      <title>Health & Fitness Tracker - Login</title>
       <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
       <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
@@ -24,12 +24,13 @@
                      <div class="login-right-wrap">
                         <h1>Login</h1>
 
-                        <form action="https://preschool.dreamguystech.com/html-template/index.html">
+                        <form action="{% url 'doLogin' %}" method="post">
+                           {% csrf_token %}
                            <div class="form-group">
-                              <input class="form-control" type="text" placeholder="Email">
+                              <input class="form-control" type="text" placeholder="Email" name="email">
                            </div>
                            <div class="form-group">
-                              <input class="form-control" type="text" placeholder="Password">
+                              <input class="form-control" type="text" placeholder="Password" name="password">
                            </div>
                            <div class="form-group">
                               <button class="btn btn-primary btn-block" type="submit">Login</button>
