@@ -10,5 +10,8 @@ urlpatterns = [
 
                   path('', views.LOGIN, name='login'),
                   path('doLogin', views.doLogin, name='doLogin'),
+                  path('doLogout',views.doLogout, name='doLogout'),
+
+                  path('User/home', user_views.HOME, name='user_home'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
