@@ -10,3 +10,6 @@ class UserModel(UserAdmin):
 
 
 admin.site.register(CustomUser,UserAdmin)
+admin.site.register(FoodCategory)
+admin.site.register(FoodItem)
+admin.site.register(FoodLog)

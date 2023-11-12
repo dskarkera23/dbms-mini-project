@@ -10,8 +10,15 @@ urlpatterns = [
 
                   path('', views.LOGIN, name='login'),
                   path('doLogin', views.doLogin, name='doLogin'),
-                  path('doLogout',views.doLogout, name='doLogout'),
+                  path('doLogout', views.doLogout, name='doLogout'),
 
                   path('User/home', user_views.HOME, name='user_home'),
+
+                  path('User/log/exelog', user_views.EXE_LOG, name='exe_log'),
+
+                  path('profile', views.PROFILE, name='profile'),
+                  path('profile/update', views.PROFILE_UPDATE, name='profile_update'),
+
+                  path('User/log/food_log', user_views.FOOD_LOG, name='food_log'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
