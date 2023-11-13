@@ -54,14 +54,34 @@ def log_food(request):
 
     return render(request, 'User/food_log.html', context)
 
-# def log_exercise(request):
-#   if request.method == 'POST':
-#       form = ExerciseLogForm(request.POST)
-#       if form.is_valid():
-#           log = form.save(commit=False)
-#         log.user = request.user
-#        log.save()
-#        return redirect('exercise_logs')
-#  else:
-#      form = ExerciseLogForm()
-#   return render(request, 'log_exercise.html', {'form': form})
+def EXE_LOG(request):
+    exercise_logs = ExerciseLog.objects.filter(user=request.user)
+    exercise_list = Exercise.objects.all()
+
+    return render(request, 'User/exe_log.html',  {
+        "exercise_logs":exercise_logs,
+        "exercise_list": exercise_list,
+    })
+
+def log_exercise(request):
+    context = {}  # Initialize an empty context dictionary
+
+    exercise_list = Exercise.objects.all()
+    context['exercise_list'] = exercise_list
+
+    if request.method == "POST":
+        form = ExerciseLogForm(request.POST)
+        if form.is_valid():
+            exercise_log = form.save(commit=False)
+            exercise_log.user = request.user
+            exercise_log.save()
+            messages.success(request, 'Exercise log entry added successfully.')
+            return redirect('exe_log')
+        else:
+            messages.error(request, 'Invalid form data. Please check and try again.')
+    else:
+        form = ExerciseLogForm()
+
+    context['form'] = form  # Add the form to the context dictionary
+
+    return render(request, 'User/exe_log.html', context)

@@ -23,13 +23,19 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
         label {
             display: block;
             margin-bottom: 10px;
         }
 
-        #log_date, #id_food, #id_category {
+        #log_date, #id_food, #id_category ,#amount_g ,#calories_consumed {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -68,6 +74,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            display: block;
+            margin: 0 auto;
         }
 
         button:hover {
@@ -77,7 +85,10 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-            <li>{{ message }}</li>
+        <div class="alert alert-success" role="alert">
+          <li>{{ message }}</li>
+        </div>
+
         {% endfor %}
     </ul>
     {% endif %}
@@ -115,10 +126,11 @@
 
         <label for="calories_consumed">Calories Consumed:</label>
         <input type="number" id="calories_consumed" name="calories_consumed" min="0" step="1">
-
+        <br><br>
         <button type="submit">Log Food</button>
     </form>
 
+    <h2>Your Food Log</h2>
     <table>
         <thead>
             <tr>

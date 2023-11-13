@@ -1,12 +1,11 @@
 from django import forms
-from .models import FoodLog
-#from .models import ExerciseLog
+from .models import FoodLog, ExerciseLog
 
 
-#class ExerciseLogForm(forms.ModelForm):
- #   class Meta:
-  #      model = ExerciseLog
-  #      fields = ['exercise', 'reps', 'sets', 'log_date']
+class ExerciseLogForm(forms.ModelForm):
+    class Meta:
+        model = ExerciseLog
+        fields = ['exercise', 'reps', 'sets', 'log_date']
 
 
 class FoodLogForm(forms.ModelForm):

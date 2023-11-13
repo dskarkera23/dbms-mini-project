@@ -1,9 +1,134 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-  <h2>Log Exercise</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log Exercise</button>
-  </form>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #exercise, #reps, #sets, #log_date {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+         table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block; /* Set it as a block-level element */
+            margin: 0 auto; /* Center it horizontally by setting margin auto */
+        }
+
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+          <li>{{ message }}</li>
+        </div>
+
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h1>Exercise Log</h1>
+    <form method="post" action="{% url 'log_exercise' %}">
+        {% csrf_token %}
+        <label for="exercise">Exercise:</label>
+        <select name="exercise" id="exercise" required>
+            <option value="" disabled selected>Select an exercise</option>
+            {% for exercise in exercise_list %}
+                <option value="{{ exercise.id }}">{{ exercise.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="reps">Reps:</label>
+        <input type="number" id="reps" name="reps" min="1" step="1" required>
+
+        <label for="sets">Sets:</label>
+        <input type="number" id="sets" name="sets" min="1" step="1" required>
+
+        <label for="log_date">Date:</label>
+        <input type="date" id="log_date" name="log_date" required>
+        <br><br>
+        <button type="submit">Log Exercise</button>
+    </form>
+
+    <h2>Your Exercise Log</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Log Date</th>
+                <th>Exercise</th>
+                <th>Reps</th>
+                <th>Sets</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in exercise_logs %}
+                <tr>
+                    <td>{{ log.log_date }}</td>
+                    <td>{{ log.exercise.name }}</td>
+                    <td>{{ log.reps }}</td>
+                    <td>{{ log.sets }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -36,29 +36,27 @@ class FoodLog(models.Model):
     calories_consumed = models.PositiveIntegerField()
 
 
-#class ExerciseCategory(models.Model):
-    #   name = models.CharField(max_length=100)
+class ExerciseCategory(models.Model):
+    category_name = models.CharField(max_length=100)
 
-    #   def __str__(self):
-#       return self.name
-
-
-#class Exercise(models.Model):
-    #   name = models.CharField(max_length=100)
-    #   category = models.ForeignKey(ExerciseCategory, on_delete=models.CASCADE)
-
-#   def __str__(self):
+    def __str__(self):
+        return self.category_name
 
 
-#       return self.name
+class Exercise(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.ForeignKey(ExerciseCategory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
-#class ExerciseLog(models.Model):
-    #   user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
-    #   exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    #   reps = models.PositiveIntegerField()
-    #   sets = models.PositiveIntegerField()
-    #   log_date = models.DateField()
+class ExerciseLog(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    reps = models.PositiveIntegerField()
+    sets = models.PositiveIntegerField()
+    log_date = models.DateField()
 
-    #   def __str__(self):
-#      return f"{self.user.username}'s Exercise Log"
+    def __str__(self):
+        return f"{self.user.username}'s Exercise Log"
