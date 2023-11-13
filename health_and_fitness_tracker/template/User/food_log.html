@@ -3,70 +3,142 @@
 {% block content %}
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f2f2;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
 
-h1 {
-    text-align: center;
-    padding: 20px;
-}
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
 
-form {
-    background-color: #fff;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        form {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-}
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
 
-select, input[type="datetime-local"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        #log_date, #id_food, #id_category {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-button {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+         table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <h1>Food Log</h1>
-    <form method="post">
-        {% csrf_token %}
+    <form method="post" action="{% url 'log_food' %}">
+    {% csrf_token %}
+
         <label for="food">Food Item:</label>
-        <select name="food" id="food" class="form-control">
-            <option value="" selected disabled>Select Food Item</option>
-            {% for food_item in food_items %}
-                <option value="{{ food_item.name }}">{{ food_item.name }}</option>
+            <select name="food" id="id_food" required>
+                <option value="" disabled selected>Select a food item</option>
+                {% for item in food_item %}
+                    <option value="{{ item.id }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+
+
+
+
+     <label for="category">Category:</label>
+        <select name="category" id="id_category" required>
+            <option value="" disabled selected>Select a category</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.category_name }}</option>
             {% endfor %}
         </select>
 
-        <label for="log_date">Date and Time:</label>
-        <input type="datetime-local" id="log_date" name="log_date">
 
-        <label for="user">User:</label>
-        <input type="text" id="user" name="user" value="{{ user.username }}" disabled>
+
+    <label for="log_date">Date:</label>
+        <input type="date" id="log_date" name="log_date" required="required">
+
+        <label for="amount_g">Amount (in grams):</label>
+        <input type="number" id="amount_g" name="amount_g" min="0" step="1">
+
+        <label for="calories_consumed">Calories Consumed:</label>
+        <input type="number" id="calories_consumed" name="calories_consumed" min="0" step="1">
 
         <button type="submit">Log Food</button>
     </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Log Date</th>
+                <th>Food Item</th>
+                <th>Category</th>
+                <th>Amount (g)</th>
+                <th>Calories Consumed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in food %}
+                <tr>
+                    <td>{{ log.log_date }}</td>
+                    <td>{{ log.food.name }}</td>
+                    <td>{{ log.category.category_name }}</td>
+                    <td>{{ log.amount_g }}</td>
+                    <td>{{ log.calories_consumed }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

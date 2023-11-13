@@ -14,11 +14,15 @@ urlpatterns = [
 
                   path('User/home', user_views.HOME, name='user_home'),
 
-                  path('User/log/exelog', user_views.EXE_LOG, name='exe_log'),
+                  #path('User/log/exelog', user_views.EXE_LOG, name='exe_log'),
 
                   path('profile', views.PROFILE, name='profile'),
                   path('profile/update', views.PROFILE_UPDATE, name='profile_update'),
 
                   path('User/log/food_log', user_views.FOOD_LOG, name='food_log'),
+                  path('User/log/log_food', user_views.log_food, name='log_food'),
+
+
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

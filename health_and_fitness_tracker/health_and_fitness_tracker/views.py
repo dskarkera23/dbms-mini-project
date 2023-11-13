@@ -3,7 +3,7 @@ from app.EmailBackEnd import EmailBackEnd
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from app.models import CustomUser, FoodItem, FoodCategory
+from app.models import CustomUser, FoodItem, FoodCategory, FoodLog
 from app.forms import FoodLogForm
 
 
@@ -78,27 +78,4 @@ def PROFILE_UPDATE(request):
     return render(request, 'profile.html')
 
 
-def log_food(request):
-    context = {}  # Initialize an empty context dictionary
 
-    if request.method == "POST":
-        form = FoodLogForm(request.POST)
-        if form.is_valid():
-            food_log = form.save(commit=False)
-            # Calculate calories consumed based on the selected food item and amount
-            food_log.calories_consumed = food_log.food.calories * food_log.amount_g / 100
-            food_log.user = request.user
-            food_log.save()
-            messages.success(request, 'Food log entry added successfully.')
-            return redirect('food_log')
-        else:
-            messages.error(request, 'Invalid form data. Please check and try again.')
-    else:
-        form = FoodLogForm()
-
-    # Fetch all food items from the database
-    food_items = FoodItem.objects.all()
-
-    context['food_items'] = food_items  # Add food_items to the context dictionary
-
-    return render(request, 'User/food_log.html', context)
