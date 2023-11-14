@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #height, #weight,#log_date {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+         table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block; /* Set it as a block-level element */
+            margin: 0 auto; /* Center it horizontally by setting margin auto */
+        }
+
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <h1>BMI Log</h1>
+
+    <form method="post" action="{% url 'bmi_log' %}">
+        {% csrf_token %}
+        <label for="height">Height (in cm):</label>
+        <input type="number" id="height" name="height" min="0" step="0.1" required>
+
+        <label for="weight">Weight (in kg):</label>
+        <input type="number" id="weight" name="weight" min="0" step="0.1" required>
+        <label for="log_date">Date:</label>
+        <input type="date" id="log_date" name="log_date" required>
+        <br><br>
+
+        <button type="submit">Log BMI</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Height (cm)</th>
+            <th>Weight (kg)</th>
+            <th>BMI</th>
+            <th>BMI Condition</th> <!-- New column for BMI condition -->
+        </tr>
+        {% for log in bmi_logs %}
+        <tr>
+            <td>{{ log.log_date }}</td>
+            <td>{{ log.height }}</td>
+            <td>{{ log.weight }}</td>
+            <td>{{ log.bmi }}</td>
+            <td>{{ log.get_bmi_condition }}</td> <!-- Display BMI condition -->
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}

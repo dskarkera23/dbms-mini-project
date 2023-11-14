@@ -13,7 +13,8 @@ urlpatterns = [
                   path('doLogout', views.doLogout, name='doLogout'),
 
                   path('User/home', user_views.HOME, name='user_home'),
-
+                  path('dashboard/', user_views.dashboard, name='dashboard'),
+                  path('get_bmi_graph_data/', user_views.get_bmi_graph_data, name='get_bmi_graph_data'),
 
 
                   path('profile', views.PROFILE, name='profile'),
@@ -24,6 +25,9 @@ urlpatterns = [
 
                   path('User/log/exe_log', user_views.EXE_LOG, name='exe_log'),
                   path('User/log/log_exercise', user_views.log_exercise, name='log_exercise'),
+
+                  path('User/log/bmi_log', user_views.log_bmi, name='bmi_log'),
+
 
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

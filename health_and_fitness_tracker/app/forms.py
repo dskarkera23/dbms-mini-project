@@ -1,5 +1,5 @@
 from django import forms
-from .models import FoodLog, ExerciseLog
+from .models import FoodLog, ExerciseLog, BMILog
 
 
 class ExerciseLogForm(forms.ModelForm):
@@ -20,3 +20,9 @@ class FoodLogForm(forms.ModelForm):
         # Populate the 'food' field choices with the provided food_items queryset
         if food_items:
             self.fields['food'].queryset = food_items
+
+
+class BMILogForm(forms.ModelForm):
+    class Meta:
+        model = BMILog
+        fields = ['height', 'weight', 'log_date']

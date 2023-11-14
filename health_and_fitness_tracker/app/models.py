@@ -35,6 +35,9 @@ class FoodLog(models.Model):
     amount_g = models.PositiveIntegerField()
     calories_consumed = models.PositiveIntegerField()
 
+    def __str__(self):
+        return f"{self.user.username}'s Food Log"
+
 
 class ExerciseCategory(models.Model):
     category_name = models.CharField(max_length=100)
@@ -60,3 +63,23 @@ class ExerciseLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Exercise Log"
+
+class BMILog(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    height = models.DecimalField(max_digits=5, decimal_places=2)  # Height in centimeters
+    weight = models.DecimalField(max_digits=5, decimal_places=2)  # Weight in kilograms
+    bmi = models.DecimalField(max_digits=5, decimal_places=2)  # BMI value
+    log_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.log_date}'
+
+    def get_bmi_condition(self):
+        if self.bmi < 18.5:
+            return 'Underweight'
+        elif 18.5 <= self.bmi < 24.9:
+            return 'Healthy weight'
+        elif 24.9 <= self.bmi < 29.9:
+            return 'Overweight'
+        else:
+            return 'Obesity'
