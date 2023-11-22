@@ -6,10 +6,34 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 class UserModel(UserAdmin):
-    list_display = ['username', 'user_type']
+    list_display = (
+        'username', 'email', 'first_name', "last_name", "is_staff", "user_type",
+    )
+    fieldsets = (
+        (
+            None, {
+                'fields': ('username', 'password')
+            }
+        ),
+        (
+            'Personal Info', {
+                'fields': ('first_name', "last_name", "email")
+            }
+        ),
+        (
+            'Important dates', {
+                'fields': ('last_login',)
+            }
+        ),
+        (
+            'Additional Info', {
+                'fields': ('user_type',)
+            }
+        )
+    )
 
 
-admin.site.register(CustomUser,UserAdmin)
+admin.site.register(CustomUser, UserModel)
 admin.site.register(FoodCategory)
 admin.site.register(FoodItem)
 admin.site.register(FoodLog)
