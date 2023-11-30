@@ -42,9 +42,14 @@ def log_food(request):
             food_log.food_id = food_item_id
 
             # Calculate calories consumed based on the selected food item and amount
-            # food_log.calories_consumed = food_log.food.calories * food_log.amount_g / 100
+            food_log.calories_consumed = (
+                food_log.food.calories * food_log.amount_g / 100
+            )
+
+            # Save the food log entry to the database
             food_log.user = request.user
             food_log.save()
+
             messages.success(request, 'Food log entry added successfully.')
             return redirect('food_log')
         else:
@@ -56,7 +61,6 @@ def log_food(request):
 
     return render(request, 'User/food_log.html', context)
 
-
 def EXE_LOG(request):
     exercise_logs = ExerciseLog.objects.filter(user=request.user)
     exercise_list = Exercise.objects.all()
@@ -67,6 +71,7 @@ def EXE_LOG(request):
     })
 
 
+# user_views.py
 def log_exercise(request):
     context = {}  # Initialize an empty context dictionary
 
@@ -77,8 +82,20 @@ def log_exercise(request):
         form = ExerciseLogForm(request.POST)
         if form.is_valid():
             exercise_log = form.save(commit=False)
+
+            # Get the selected exercise ID from the form
+            exercise_id = request.POST.get('exercise')
+            exercise = Exercise.objects.get(pk=exercise_id)
+
+            # Calculate calories burned based on the selected exercise, reps, and sets
+            exercise_log.calories_burned = (
+                exercise.calories_burned_per_set * exercise_log.sets
+            )
+
+            # Save the exercise log entry to the database
             exercise_log.user = request.user
             exercise_log.save()
+
             messages.success(request, 'Exercise log entry added successfully.')
             return redirect('exe_log')
         else:
@@ -87,7 +104,8 @@ def log_exercise(request):
         form = ExerciseLogForm()
 
     context['form'] = form  # Add the form to the context dictionary
-
+    exercise_logs = ExerciseLog.objects.filter(user=request.user)
+    context['exercise_logs'] = exercise_logs
     return render(request, 'User/exe_log.html', context)
 
 

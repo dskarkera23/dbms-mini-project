@@ -50,6 +50,7 @@ class ExerciseCategory(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(ExerciseCategory, on_delete=models.CASCADE)
+    calories_burned_per_set  = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -61,6 +62,7 @@ class ExerciseLog(models.Model):
     reps = models.PositiveIntegerField()
     sets = models.PositiveIntegerField()
     log_date = models.DateField()
+    calories_burned = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.username}'s Exercise Log"

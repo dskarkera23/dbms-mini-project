@@ -24,11 +24,11 @@ def doLogin(request):
             login(request, user)
             user_type = user.user_type
             if user_type == '1':
-                return redirect('user_home')
+                return redirect('dashboard')
             elif user_type == '2':
                 return HttpResponse('This is Trainer panel')
             elif user_type == '3':
-                return redirect('user_home')
+                return redirect('dashboard')
             else:
                 # error message
                 messages.error(request, 'Email and Password Are Invalid !')

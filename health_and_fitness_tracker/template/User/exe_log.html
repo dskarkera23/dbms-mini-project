@@ -112,23 +112,26 @@
 
     <h2>Your Exercise Log</h2>
     <table>
-        <thead>
+    <thead>
+        <tr>
+            <th>Log Date</th>
+            <th>Exercise</th>
+            <th>Reps</th>
+            <th>Sets</th>
+            <th>Calories Burned</th> <!-- Add this column -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in exercise_logs %}
             <tr>
-                <th>Log Date</th>
-                <th>Exercise</th>
-                <th>Reps</th>
-                <th>Sets</th>
+                <td>{{ log.log_date }}</td>
+                <td>{{ log.exercise.name }}</td>
+                <td>{{ log.reps }}</td>
+                <td>{{ log.sets }}</td>
+                <td>{{ log.calories_burned }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for log in exercise_logs %}
-                <tr>
-                    <td>{{ log.log_date }}</td>
-                    <td>{{ log.exercise.name }}</td>
-                    <td>{{ log.reps }}</td>
-                    <td>{{ log.sets }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
