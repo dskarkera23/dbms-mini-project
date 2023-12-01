@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .bmi-condition {
+    font-weight: bold;
+    padding: 4px 10px;
+    }
 
-</body>
-</html>
+    .bmi-condition.underweight {
+        background-color: blue;
+        color: white;
+    }
+
+    .bmi-condition.healthyweight {
+        background-color: green;
+        color: white;
+    }
+
+    .bmi-condition.overweight {
+        background-color: yellow;
+        color: black;
+    }
+
+    .bmi-condition.obesity {
+        background-color: red;
+        color: white;
+    }
+
+</style>
+<div class="page-header">
+
+</div>
+
+
+
+
+    {% endblock %}

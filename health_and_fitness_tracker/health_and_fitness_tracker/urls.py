@@ -9,10 +9,13 @@ urlpatterns = [
                   path('base/', views.BASE, name='base'),
 
                   path('', views.LOGIN, name='login'),
+                  path('signup/', views.SIGNUP, name='signup'),
                   path('doLogin', views.doLogin, name='doLogin'),
                   path('doLogout', views.doLogout, name='doLogout'),
+                  path('doSignup', views.doSignup, name='doSignup'),
 
                   path('User/home', user_views.HOME, name='user_home'),
+                  path('Trainer/home', trainer_views.HOME, name='trainer_home'),
                   path('dashboard/', user_views.dashboard, name='dashboard'),
                   path('get_bmi_graph_data/', user_views.get_bmi_graph_data, name='get_bmi_graph_data'),
 

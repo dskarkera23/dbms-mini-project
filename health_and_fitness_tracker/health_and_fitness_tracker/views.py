@@ -14,6 +14,35 @@ def BASE(request):
 def LOGIN(request):
     return render(request, 'login.html')
 
+def SIGNUP(request):
+    return render(request, 'signup.html')
+
+
+def doSignup(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password1')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        user_type = request.POST.get('user_type')
+        print(request.POST)
+        try:
+            user = CustomUser.objects.create(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                user_type=user_type,
+            )
+            user.save()
+            messages.success(request, 'Account created successfully!')
+            return redirect('login')
+        except:
+            messages.error(request, 'Failed to create an account. Please try again.')
+            return redirect('signup')
+
 
 def doLogin(request):
     if request.method == "POST":
@@ -26,7 +55,7 @@ def doLogin(request):
             if user_type == '1':
                 return redirect('dashboard')
             elif user_type == '2':
-                return HttpResponse('This is Trainer panel')
+                return redirect('dashboard')
             elif user_type == '3':
                 return redirect('dashboard')
             else:
