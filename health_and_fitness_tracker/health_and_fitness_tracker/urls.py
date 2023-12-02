@@ -22,6 +22,7 @@ urlpatterns = [
 
                   path('profile', views.PROFILE, name='profile'),
                   path('profile/update', views.PROFILE_UPDATE, name='profile_update'),
+                  path('select_trainer/', views.select_trainer, name='select_trainer'),
 
                   path('User/log/food_log', user_views.FOOD_LOG, name='food_log'),
                   path('User/log/log_food', user_views.log_food, name='log_food'),
@@ -31,6 +32,7 @@ urlpatterns = [
 
                   path('User/log/bmi_log', user_views.log_bmi, name='bmi_log'),
 
+                  path('trainer_dashboard/', trainer_views.trainer_dashboard, name='trainer_dashboard'),
 
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

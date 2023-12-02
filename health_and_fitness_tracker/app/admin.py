@@ -7,7 +7,7 @@ from django.contrib.auth.admin import UserAdmin
 
 class UserModel(UserAdmin):
     list_display = (
-        'username', 'email', 'first_name', "last_name", "is_staff", "user_type",
+        'username', 'email', 'first_name', "last_name", "is_staff", "user_type",'selected_trainer',
     )
     fieldsets = (
         (
@@ -29,7 +29,11 @@ class UserModel(UserAdmin):
             'Additional Info', {
                 'fields': ('user_type',)
             }
-        )
+        ),
+        ('Trainer Info', {
+            'fields': ('selected_trainer',),
+            }
+        ),
     )
 
 

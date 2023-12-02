@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+   <div class="row justify-content-center">
+      <div class="col-md-8">
+         <!-- Display the current trainer card -->
+         <div class="card mb-4">
+            <div class="card-body">
+               <h5 class="card-title">Current Trainer</h5>
+               <p class="card-text">
+                  <strong>{{ selected_trainer_name | default:"None" }}</strong>
+               </p>
+            </div>
+         </div>
+
+         <!-- Selection card -->
+         <div class="card">
+            <div class="card-header">
+               <h5 class="card-title">Select Trainer</h5>
+            </div>
+            <div class="card-body">
+               <form method="post" action="{% url 'select_trainer' %}" class="mb-3">
+                  {% csrf_token %}
+                  <div class="form-group">
+                     <label for="selected_trainer">Choose Your Trainer:</label>
+                     <select name="selected_trainer" id="selected_trainer" class="form-control">
+                        <option value="" {% if selected_trainer_name == 'None' %}selected{% endif %}>None</option>
+                        {% for trainer in trainers %}
+                           <option value="{{ trainer.id }}" {% if selected_trainer_name == trainer.get_full_name %}selected{% endif %}>{{ trainer.get_full_name }}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save</button>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -22,24 +22,33 @@ def doSignup(request):
     if request.method == "POST":
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password1')
+        password = request.POST.get('password1')  # Use 'password1' from the form for clarity
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         user_type = request.POST.get('user_type')
-        print(request.POST)
+
         try:
+            # Create a user instance
             user = CustomUser.objects.create(
                 username=username,
                 email=email,
-                password=password,
                 first_name=first_name,
                 last_name=last_name,
                 user_type=user_type,
             )
+
+            # Use set_password to properly hash the password
+            user.set_password(password)
+
+            # Alternatively, you can use make_password to hash the password
+            # user.password = make_password(password)
+
             user.save()
+
             messages.success(request, 'Account created successfully!')
             return redirect('login')
-        except:
+        except Exception as e:
+            print(e)
             messages.error(request, 'Failed to create an account. Please try again.')
             return redirect('signup')
 
@@ -55,7 +64,7 @@ def doLogin(request):
             if user_type == '1':
                 return redirect('dashboard')
             elif user_type == '2':
-                return redirect('dashboard')
+                return redirect('trainer_dashboard')
             elif user_type == '3':
                 return redirect('dashboard')
             else:
@@ -109,4 +118,29 @@ def PROFILE_UPDATE(request):
     return render(request, 'profile.html')
 
 
+def select_trainer(request):
+    if request.method == 'POST':
+        selected_trainer_id = request.POST.get('selected_trainer')
+        if selected_trainer_id:
+            selected_trainer = CustomUser.objects.get(pk=selected_trainer_id)
 
+            # Update the user's selected_trainer field
+            request.user.selected_trainer = selected_trainer
+            request.user.save()
+
+            # Notify the user and selected trainer (implement your notification logic here)
+
+    # Only fetch trainers for users with user_type '2'
+    trainers = CustomUser.objects.filter(user_type='2')
+
+    context = {
+        'trainers': trainers,
+    }
+
+    # Check if the user already has a selected trainer
+    if request.user.selected_trainer:
+        context['selected_trainer_name'] = request.user.selected_trainer.get_full_name()
+    else:
+        context['selected_trainer_name'] = "None"
+
+    return render(request, 'select_trainer.html', context)

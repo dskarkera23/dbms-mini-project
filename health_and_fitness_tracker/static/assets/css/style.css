@@ -1368,13 +1368,16 @@ div.dataTables_wrapper div.dataTables_info {
 .mini-sidebar .header .header-left {
 	justify-content: center;
 }
+
+
 .header .header-left .logo {
 	display: inline-block;
 	line-height: 60px;
+	width: 200px;
 }
 .header .header-left .logo img {
-    max-height: 40px;
-    width: auto;
+    max-height: 100px;
+    
 }
 .header-left .logo.logo-small {
     display: none;
@@ -1457,11 +1460,11 @@ div.dataTables_wrapper div.dataTables_info {
     padding: 10px 15px;
 }
 .user-menu .dropdown-menu .dropdown-item:hover {
-    color: #FFBC53;
+    color: #18aefa;
 }
 .header .dropdown-menu > li > a:focus,
 .header .dropdown-menu > li > a:hover {
-	background-color: #FFBC53;
+	background-color: #18aefa;
 	color: #fff;
 }
 .header .dropdown-menu > li > a:focus i,
@@ -1472,13 +1475,13 @@ div.dataTables_wrapper div.dataTables_info {
 	padding: 10px 18px;
 }
 .header .dropdown-menu > li > a i {
-	color: #FFBC53;
+	color: #18aefa;
 	margin-right: 10px;
 	text-align: center;
 	width: 18px;
 }
 .header .user-menu .dropdown-menu > li > a i {
-	color: #FFBC53;
+	color: #18aefa;
 	font-size: 16px;
 	margin-right: 10px;
 	min-width: 18px;
@@ -1596,18 +1599,7 @@ footer p {
 	10. Sidebar
 -----------------------*/
 
-.sidebar {
-    background-color: #f7f7fa;
-	border-right: 1px solid #ececf5;
-    bottom: 0;
-    left: 0;
-    margin-top: 0;
-    position: fixed;
-    top: 60px;
-    transition: all 0.2s ease-in-out 0s;
-    width: 320px;
-    z-index: 1001;	
-}
+
 .sidebar.opened {
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
@@ -2865,9 +2857,7 @@ table.table-inbox tbody tr.checked {
 	color: #777777;
 	margin-bottom: 0;
 }
-.calendar-info h6 span {
-	
-}
+
 .calendar-info .calendar-blue {
     font-size: 12px;
     font-weight: 500;

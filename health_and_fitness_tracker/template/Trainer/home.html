@@ -1,35 +1,41 @@
-{% extends 'base.html' %}
+{% extends 'trainer_base.html' %}
 {% block content %}
-<style>
-    .bmi-condition {
-    font-weight: bold;
-    padding: 4px 10px;
-    }
-
-    .bmi-condition.underweight {
-        background-color: blue;
-        color: white;
-    }
-
-    .bmi-condition.healthyweight {
-        background-color: green;
-        color: white;
-    }
-
-    .bmi-condition.overweight {
-        background-color: yellow;
-        color: black;
-    }
-
-    .bmi-condition.obesity {
-        background-color: red;
-        color: white;
-    }
-
-</style>
 <div class="page-header">
-
+    {% if clients_with_bmi %}
+        <h3>Your Clients:</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>BMI</th>
+                        <th>BMI Condition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client_info in clients_with_bmi %}
+                        <tr>
+                            <td>{{ client_info.client_name }}</td>
+                            <td>{{ client_info.latest_bmi }}</td>
+                            <td>
+                                <span class="badge {% if client_info.bmi_condition == 'Underweight' %}badge-info{% elif client_info.bmi_condition == 'Healthy Weight' %}badge-success{% elif client_info.bmi_condition == 'Overweight' %}badge-warning{% elif client_info.bmi_condition == 'Obesity' %}badge-danger{% endif %}">
+                                    {{ client_info.bmi_condition|lower }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>You currently have no clients.</p>
+    {% endif %}
 </div>
+
+
+
+
+
 
 
 
