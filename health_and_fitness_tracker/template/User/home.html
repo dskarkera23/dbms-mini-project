@@ -2,8 +2,8 @@
 {% block content %}
 <style>
     .bmi-condition {
-    font-weight: bold;
-    padding: 4px 10px;
+        font-weight: bold;
+        padding: 4px 10px;
     }
 
     .bmi-condition.underweight {
@@ -26,39 +26,71 @@
         color: white;
     }
 
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .big-bmi-value {
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .big-bmi-condition {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        transition: color 0.3s ease; /* Add transition effect for color change */
+    }
+
+    /* Fancy styles for the BMI condition colors */
+    .big-bmi-condition.underweight {
+        color: #3498db; /* Blue color */
+    }
+
+    .big-bmi-condition.healthy weight {
+        color: #2ecc71; /* Green color */
+    }
+
+    .big-bmi-condition.overweight {
+        color: #f39c12; /* Yellow color */
+    }
+
+    .big-bmi-condition.obesity {
+        color: #e74c3c; /* Red color */
+    }
 </style>
-<div class="page-header">
-                 <div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">BMI Graph</h5>
-            </div>
-            <div class="card-body">
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">BMI Graph</h5>
+                </div>
                 <div class="card-body">
                     <canvas id="bmiChart" width="400" height="200"></canvas>
                 </div>
-
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">BMI Condition</h5>
                 </div>
                 <div class="card-body">
                     {% if latest_bmi %}
-                        <p>Current BMI: {{ latest_bmi }}</p>
-                        <p>BMI Condition: <span class="bmi-condition">{{ bmi_condition|lower }}</span></p>
+                        <div class="big-bmi-value">{{ latest_bmi }}</div>
+                        <div class="big-bmi-condition {{ bmi_condition|lower }}">{{ bmi_condition }}</div>
                     {% else %}
                         <p>No BMI records available.</p>
                     {% endif %}
                 </div>
             </div>
+        </div>
     </div>
-</div>
 </div>
 
 <script>
@@ -93,13 +125,18 @@
                 });
 
                 // Update the BMI condition dynamically
-                var bmiConditionElement = document.querySelector('.bmi-condition');
-                if (bmiConditionElement && data.latest_bmi_condition) {
+                var bigBmiValueElement = document.querySelector('.big-bmi-value');
+                var bigBmiConditionElement = document.querySelector('.big-bmi-condition');
+                if (bigBmiValueElement && bigBmiConditionElement && data.latest_bmi && data.latest_bmi_condition) {
+                    bigBmiValueElement.textContent = data.latest_bmi;
+                    bigBmiConditionElement.textContent = data.latest_bmi_condition;
+                    // Remove existing color classes
+                    bigBmiConditionElement.classList.remove('underweight', 'healthy weight', 'overweight', 'obesity');
+                    // Apply color class based on BMI condition
                     var conditionClass = data.latest_bmi_condition.toLowerCase().replace(/\s+/g, '_');
-                    bmiConditionElement.textContent = data.latest_bmi_condition;
-                    bmiConditionElement.classList.add(conditionClass);
+                    bigBmiConditionElement.classList.add(conditionClass);
                 } else {
-                    console.error('Latest BMI condition not available.');
+                    console.error('Latest BMI data not available.');
                 }
             })
             .catch(error => console.error('Error fetching BMI data:', error));
@@ -107,6 +144,4 @@
 </script>
 
 
-
-
-    {% endblock %}
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from app.models import BMILog
-
+from app.models import *
+from app.forms import *
 
 def HOME(request):
     return render(request, 'Trainer/home.html')
@@ -57,3 +57,43 @@ def get_bmi_condition(bmi):
         return 'Overweight'
     else:
         return 'Obesity'
+
+
+from django.db import IntegrityError
+
+from django.db.models import Q
+from app.models import Message
+from app.forms import MessageForm
+from itertools import chain
+# trainer_views.py
+
+# health_and_fitness_tracker/trainer_views.py
+
+def trainer_messages(request):
+    # Get both sent and received messages for the trainer
+    sent_messages = Message.objects.filter(sender=request.user).order_by('-timestamp')
+    received_messages = Message.objects.filter(receiver=request.user).order_by('-timestamp')
+
+    # Combine and sort the messages based on the timestamp
+    all_messages = sorted(chain(sent_messages, received_messages), key=lambda msg: msg.timestamp, reverse=True)
+
+    if request.method == 'POST':
+        form = TrainerMessageForm(request.POST, trainer=request.user)
+        if form.is_valid():
+            content = form.cleaned_data['content']
+            receiver_user = form.cleaned_data['receiver']
+
+            try:
+                Message.create_message(sender=request.user, receiver=receiver_user, content=content)
+                return redirect('trainer_messages')
+            except IntegrityError as e:
+                print(f"IntegrityError: {e}")
+    else:
+        form = TrainerMessageForm(trainer=request.user)
+
+    context = {
+        'all_messages': all_messages,
+        'form': form,
+    }
+
+    return render(request, 'Trainer/tmsg.html', context)

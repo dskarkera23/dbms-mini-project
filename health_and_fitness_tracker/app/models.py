@@ -29,6 +29,8 @@ class FoodCategory(models.Model):
         return self.category_name
 
 
+
+
 class FoodItem(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE)
@@ -43,7 +45,7 @@ class FoodLog(models.Model):
     food = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE, null=True, blank=True)
     log_date = models.DateField()
-    amount_g = models.PositiveIntegerField()
+    qty = models.PositiveIntegerField()
     calories_consumed = models.PositiveIntegerField()
 
     def __str__(self):
@@ -60,7 +62,7 @@ class ExerciseCategory(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(ExerciseCategory, on_delete=models.CASCADE)
-    calories_burned_per_set  = models.PositiveIntegerField(default=0)
+    calories_burned_per_set = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -76,6 +78,7 @@ class ExerciseLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Exercise Log"
+
 
 class BMILog(models.Model):
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='bmi_records')
@@ -96,3 +99,17 @@ class BMILog(models.Model):
             return 'Overweight'
         else:
             return 'Obesity'
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(CustomUser, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Message from {self.sender.username} to {self.receiver.username}'
+
+    @classmethod
+    def create_message(cls, sender, receiver, content):
+        return cls.objects.create(sender=sender, receiver=receiver, content=content)

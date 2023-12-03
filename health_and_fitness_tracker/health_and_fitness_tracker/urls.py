@@ -34,5 +34,8 @@ urlpatterns = [
 
                   path('trainer_dashboard/', trainer_views.trainer_dashboard, name='trainer_dashboard'),
 
+                  path('User/messages/', user_views.user_messages, name='user_messages'),
+                  path('Trainer/messages/', trainer_views.trainer_messages, name='trainer_messages'),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

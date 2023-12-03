@@ -43,7 +43,7 @@ def log_food(request):
 
             # Calculate calories consumed based on the selected food item and amount
             food_log.calories_consumed = (
-                food_log.food.calories * food_log.amount_g / 100
+                    food_log.food.calories * food_log.qty / 100
             )
 
             # Save the food log entry to the database
@@ -60,6 +60,7 @@ def log_food(request):
     context['form'] = form  # Add the form to the context dictionary
 
     return render(request, 'User/food_log.html', context)
+
 
 def EXE_LOG(request):
     exercise_logs = ExerciseLog.objects.filter(user=request.user)
@@ -89,7 +90,7 @@ def log_exercise(request):
 
             # Calculate calories burned based on the selected exercise, reps, and sets
             exercise_log.calories_burned = (
-                exercise.calories_burned_per_set * exercise_log.sets
+                    exercise.calories_burned_per_set * exercise_log.sets
             )
 
             # Save the exercise log entry to the database
@@ -141,13 +142,10 @@ def log_bmi(request):
 
 
 def dashboard(request):
-
     bmi_logs = BMILog.objects.filter(user=request.user).order_by('-log_date')[:10]
 
     log_dates = [log.log_date.strftime('%Y-%m-%d') for log in bmi_logs]
     bmi_values = [log.bmi for log in bmi_logs]
-
-
 
     # Calculate BMI condition for the most recent log
     if bmi_logs:
@@ -209,3 +207,48 @@ def get_bmi_color(condition):
         return "yellow"  # Choose your color
     else:
         return "red"
+
+
+from django.db import IntegrityError  # Import IntegrityError
+
+
+
+
+from itertools import chain
+from django.db.models import Q
+
+from django.shortcuts import render, redirect
+from django.db.models import Q
+from app.models import Message
+from app.forms import MessageForm
+
+# user_views.py
+# user_views.py
+# user_views.py
+
+# user_views.py
+
+def user_messages(request):
+    # Fetch both sent and received messages for the user
+    messages = Message.objects.filter(Q(sender=request.user) | Q(receiver=request.user)).order_by('-timestamp')
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data['content']
+            receiver_user = request.user.selected_trainer
+
+            # Create and save the message with the proper sender and receiver
+            Message.objects.create(sender=request.user, receiver=receiver_user, content=content)
+
+            return redirect('user_messages')
+    else:
+        # Pass the user to the form
+        form = MessageForm()
+
+    context = {
+        'messages': messages,
+        'form': form,
+    }
+
+    return render(request, 'User/msg.html', context)
