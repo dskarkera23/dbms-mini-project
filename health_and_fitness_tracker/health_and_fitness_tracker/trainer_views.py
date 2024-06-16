@@ -12,18 +12,13 @@ from app.models import BMILog
 
 def trainer_dashboard(request):
     clients_with_bmi = []
-
-    # Loop through each client of the trainer
     for client in request.user.clients.all():
-        # Retrieve the latest BMI log for the client
         latest_bmi_log = BMILog.objects.filter(user=client).order_by('-log_date').first()
 
-        # Check if BMI log is available
         if latest_bmi_log:
             latest_bmi = latest_bmi_log.bmi
-            bmi_condition = get_bmi_condition(latest_bmi)  # You need to define this function
+            bmi_condition = get_bmi_condition(latest_bmi) 
 
-            # Add client and BMI info to the list
             clients_with_bmi.append({
                 'client': client,
                 'client_name': client.get_full_name(),
@@ -31,7 +26,6 @@ def trainer_dashboard(request):
                 'bmi_condition': bmi_condition,
             })
         else:
-            # If no BMI log available, set values to None
             clients_with_bmi.append({
                 'client': client,
                 'client_name': client.get_full_name(),
@@ -47,8 +41,6 @@ def trainer_dashboard(request):
 
 
 def get_bmi_condition(bmi):
-    # Implement logic to determine BMI condition based on BMI value
-    # You can define your own conditions and thresholds
     if bmi < 18.5:
         return 'Underweight'
     elif 18.5 <= bmi < 24.9:
@@ -65,16 +57,11 @@ from django.db.models import Q
 from app.models import Message
 from app.forms import MessageForm
 from itertools import chain
-# trainer_views.py
-
-# health_and_fitness_tracker/trainer_views.py
 
 def trainer_messages(request):
-    # Get both sent and received messages for the trainer
     sent_messages = Message.objects.filter(sender=request.user).order_by('-timestamp')
     received_messages = Message.objects.filter(receiver=request.user).order_by('-timestamp')
 
-    # Combine and sort the messages based on the timestamp
     all_messages = sorted(chain(sent_messages, received_messages), key=lambda msg: msg.timestamp, reverse=True)
 
     if request.method == 'POST':
