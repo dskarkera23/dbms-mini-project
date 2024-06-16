@@ -10,13 +10,13 @@ class CustomUser(AbstractUser):
     )
 
     user_type = models.CharField(choices=USER, max_length=50, default=1)
-    # Allow selected_trainer to be null only for users with user_type '1'
+    
     selected_trainer = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='clients',  # This is the reverse relation name
+        related_name='clients', 
         default=None,
         limit_choices_to={'user_type': '1'}
     )
@@ -82,9 +82,9 @@ class ExerciseLog(models.Model):
 
 class BMILog(models.Model):
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='bmi_records')
-    height = models.DecimalField(max_digits=5, decimal_places=2)  # Height in centimeters
-    weight = models.DecimalField(max_digits=5, decimal_places=2)  # Weight in kilograms
-    bmi = models.DecimalField(max_digits=5, decimal_places=2)  # BMI value
+    height = models.DecimalField(max_digits=5, decimal_places=2)  
+    weight = models.DecimalField(max_digits=5, decimal_places=2)  
+    bmi = models.DecimalField(max_digits=5, decimal_places=2)  
     log_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
